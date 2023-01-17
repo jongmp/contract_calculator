@@ -64,9 +64,9 @@ st.sidebar.title("Base Contract Information")
 st.sidebar.info("Please fill in your base salary, base rent, and home state below")
 
 # Inputs for Base Salary 
-base_salary = st.sidebar.number_input("Please enter your base monthly salary ($)", min_value=0, max_value=20000, value=4000, step=100)
-base_stipend = st.sidebar.number_input("Please enter your base monthly stipend ($)", min_value=0, max_value=20000, value=1000, step=100)
-base_rent = st.sidebar.number_input("Please enter your base monthly rent ($)", min_value=0, max_value=20000, value=1500, step=100)
+base_salary = st.sidebar.number_input("Please enter your base weekly salary ($)", min_value=0.00, max_value=20000.00, value=4000.00, step=100.00)
+base_stipend = st.sidebar.number_input("Please enter your base weekly stipend ($)", min_value=0.00, max_value=20000.00, value=4000.00, step=100.00)
+base_rent = st.sidebar.number_input("Please enter your base monthly rent ($)", min_value=0.00, max_value=20000.00, value=1500.00, step=100.00)
 home_state = st.sidebar.selectbox("Please pick your home state", key = "base", options = state_options.keys())
 
 # Calculating Current Post Tax Monthly Salary 
@@ -76,17 +76,17 @@ base_total_tax_rate = base_tax_rate + fed_tax
 # Post Tax Monthly Salary 
 st.sidebar.write("\n")
 
-post_base_salary = base_salary * (1 - base_total_tax_rate) + base_stipend
-st.sidebar.write("""Post Tax Base Monthly Salary \n
-                 $""" + str(int(post_base_salary)))
+post_base_salary = base_salary * 4 * (1 - base_total_tax_rate) + base_stipend * 4
+st.sidebar.write("""Post Tax Monthly Salary\n
+                 $""" + str(round(float(post_base_salary),2)))
 
 # Post Tax and Rent Take Home
-st.sidebar.write("""Post Tax and Rent Take Home is \n
-                 $""" + str(int(post_base_salary - base_rent)))
+st.sidebar.write("""Post Tax and Housing Income is \n
+                 $""" + str(round(float(post_base_salary - base_rent),2)))
 
 # Main Page
 st.title("Travel Contract Comparison")
-st.info("Please enter your monthly salary, stipend, rent, and state to calculate your take home pay for each contract and base contract")
+st.info("""Please enter your weekly salary, stipend, monthly rent, and state to calculate your take home pay for each contract and base contract""")
 
 # Setting Up Columns
 columns = st.columns(3, gap="large")
@@ -96,85 +96,71 @@ with columns[0]:
     st.text_input(label = "Contract 1", placeholder = "Please enter a name for your contract")
     container_one = st.container()
     # Inputs for Base Salary 
-    opt_one_salary = container_one.number_input("**Please enter your monthly salary ($)**", min_value=0, max_value=20000, value=6000, step=100)
-    opt_one_stipend = container_one.number_input("Please enter your monthly stipend ($)", min_value=0, max_value=20000, value=1000, step=100)
-    opt_one_rent = container_one.number_input("Please enter your monthly rent ($)", min_value=0, max_value=20000, value=2000, step=100)
+    opt_one_salary = container_one.number_input("Please enter your weekly salary ($)", min_value=0.00, max_value=20000.00, value=6000.00, step=100.00)
+    opt_one_stipend = container_one.number_input("Please enter your weekly stipend ($)", min_value=0.00, max_value=20000.00, value=1000.00, step=100.00)
+    opt_one_rent = container_one.number_input("Please enter your monthly rent ($)", min_value=0.00, max_value=20000.00, value=2000.00, step=100.00)
     opt_one_state = container_one.selectbox("Please pick your home state", key = "opt_one", options = state_options.keys())
 
     # Calculating Current Post Tax Monthly Salary 
     base_tax_rate = float(state_options[opt_one_state])
     base_total_tax_rate = base_tax_rate + fed_tax
 
-    opt_one_post_tax_sal = opt_one_salary * (1 - base_total_tax_rate) + opt_one_stipend
-    st.write("""Post Tax Base Monthly Salary \n
-                    $""" + str(int(opt_one_post_tax_sal)))
+    opt_one_post_tax_sal = opt_one_salary * 4 * (1 - base_total_tax_rate) + opt_one_stipend * 4
+    st.write("""Post Tax Monthly Salary \n
+                    $""" + str(round(float(opt_one_post_tax_sal),2)))
 
     # Post Tax and Rent Take Home
-    st.write("""Post Tax and Rent Take Home (Factoring in Home Rent) is \n
-                    $""" + str(int(opt_one_post_tax_sal - opt_one_rent - base_rent)))
-    
-    # In one month, you would make this much more 
-    st.write("""In 1 month, you would make this much more/less compared to your base\n
-                    $""" + str(int(opt_one_post_tax_sal - post_base_salary - opt_one_rent - base_rent)))
-
-    # In 3 months, you would make this much more
-    st.write("""In 3 months, you would make this much more/less compared to your base\n
-                    $""" + str(int(3 * (opt_one_post_tax_sal - post_base_salary - opt_one_rent - base_rent))))
+    st.write("""Post Tax and Housing Income (Factoring in Home Rent) is \n
+                    $""" + str(round(float(opt_one_post_tax_sal - opt_one_rent - base_rent),2)))
 
 with columns[1]:
 # Option 2
     st.text_input(label = "Contract 2", placeholder = "Please enter a name for your contract")
     # Inputs for Base Salary 
-    opt_two_salary = st.number_input("Please enter your monthly salary ($)", key = "opt_two_sal", min_value=0, max_value=20000, value=9000, step=100)
-    opt_two_stipend = st.number_input("Please enter your monthly stipend ($)", min_value=0, max_value=20000, value=1500, step=100, key = 'opt_two_stip')
-    opt_two_rent = st.number_input("Please enter your monthly rent ($)", key = "opt_two_rent", min_value=0, max_value=20000, value=2000, step=100)
+    opt_two_salary = st.number_input("Please enter your weekly salary ($)", key = "opt_two_sal", min_value=0.00, max_value=20000.00, value=9000.00, step=100.00)
+    opt_two_stipend = st.number_input("Please enter your weekly stipend ($)", min_value=0.00, max_value=20000.00, value=1500.00, step=100.00, key = 'opt_two_stip')
+    opt_two_rent = st.number_input("Please enter your monthly rent ($)", key = "opt_two_rent", min_value=0.00, max_value=20000.00, value=2000.00, step=100.00)
     opt_two_state = st.selectbox("Please pick your home state", key = "opt_two_state", options = state_options.keys())
 
     # Calculating Current Post Tax Monthly Salary 
     base_tax_rate = float(state_options[opt_two_state])
     base_total_tax_rate = base_tax_rate + fed_tax
 
-    opt_two_post_tax_sal = opt_two_salary * (1 - base_total_tax_rate) + opt_two_stipend
-    st.write("""Post Tax Base Monthly Salary \n
-                    $""" + str(int(opt_two_post_tax_sal)))
+    opt_two_post_tax_sal = opt_two_salary * 4 * (1 - base_total_tax_rate) + opt_two_stipend * 4
+    st.write("""Post Tax Monthly Salary \n
+                    $""" + str(round(float(opt_two_post_tax_sal),2)))
 
     # Post Tax and Rent Take Home
-    st.write("""Post Tax and Rent Take Home (Factoring in Home Rent) is \n
-                    $""" + str(int(opt_two_post_tax_sal - opt_two_rent - base_rent)))
+    st.write("""Post Tax and Housing Income (Factoring in Home Rent) is \n
+                    $""" + str(round(float(opt_two_post_tax_sal - opt_two_rent - base_rent),2)))
     
     # In one month, you would make this much more 
-    st.write("""In 1 month, you would make this much more/less compared to your base\n
-                    $""" + str(int(opt_two_post_tax_sal - post_base_salary - opt_one_rent - base_rent)))
+    #st.write("""In 1 month, you would make this much more/less compared to your base\n
+    #                $""" + str(round(float(opt_two_post_tax_sal - post_base_salary - opt_one_rent - base_rent),2)))
 
     # In 3 months, you would make this much more
-    st.write("""In 3 months, you would make this much more/less compared to your base\n
-                    $""" + str(int(3 * (opt_two_post_tax_sal - post_base_salary - opt_one_rent - base_rent))))
+    #st.write("""In 3 months, you would make this much more/less compared to your base\n
+    #                $""" + str(round(float(3 * (opt_two_post_tax_sal - post_base_salary - opt_one_rent - base_rent)),2)))
     
 with columns[2]:
 # Option 3
     st.text_input(label = "Contract 3", placeholder = "Please enter a name for your contract")
     # Inputs for Base Salary 
-    opt_three_salary = st.number_input("Please enter your monthly salary ($)", key = "opt_three_sal", min_value=0, max_value=20000, value=8000, step=100)
-    opt_three_stipend = st.number_input("Please enter your monthly stipend ($)", min_value=0, max_value=20000, value=2000, step=100, key = 'opt_three_stip')
-    opt_three_rent = st.number_input("Please enter your monthly rent ($)", key = "opt_three_rent", min_value=0, max_value=20000, value=2000, step=100)
+    opt_three_salary = st.number_input("Please enter your weekly salary ($)", key = "opt_three_sal", min_value=0.00, max_value=20000.00, value=8000.00, step=100.00)
+    opt_three_stipend = st.number_input("Please enter your weekly stipend ($)", min_value=0.00, max_value=20000.00, value=2000.00, step=100.00, key = 'opt_three_stip')
+    opt_three_rent = st.number_input("Please enter your monthly rent ($)", key = "opt_three_rent", min_value=0.00, max_value=20000.00, value=2000.00, step=100.00)
     opt_three_state = st.selectbox("Please pick your home state", key = "opt_three_state", options = state_options.keys())
 
     # Calculating Current Post Tax Monthly Salary 
     base_tax_rate = float(state_options[opt_three_state])
     base_total_tax_rate = base_tax_rate + fed_tax
 
-    opt_three_post_tax_sal = opt_three_salary * (1 - base_total_tax_rate) + opt_three_stipend
-    st.write("""Post Tax Base Monthly Salary \n
-                    $""" + str(int(opt_three_post_tax_sal)))
+    opt_three_post_tax_sal = opt_three_salary * 4 * (1 - base_total_tax_rate) + opt_three_stipend * 4
+    st.write("""Post Tax Monthly Salary \n
+                    $""" + str(round(float(opt_three_post_tax_sal),2)))
 
     # Post Tax and Rent Take Home
-    st.write("""Post Tax and Rent Take Home (Factoring in Home Rent) is \n
-                    $""" + str(int(opt_three_post_tax_sal - opt_three_rent - base_rent)))
-    
-    # In one month, you would make this much more 
-    st.write("""In 1 month, you would make this much more/less compared to your base\n
-                    $""" + str(int(opt_three_post_tax_sal - post_base_salary - opt_one_rent - base_rent)))
+    st.write("""Post Tax and Housing Income (Factoring in Home Rent) is \n
+                    $""" + str(round(float(opt_three_post_tax_sal - opt_three_rent - base_rent),2)))
 
-    # In 3 months, you would make this much more
-    st.write("""In 3 months, you would make this much more/less compared to your base\n
-                    $""" + str(int(3 * (opt_three_post_tax_sal - post_base_salary - opt_one_rent - base_rent))))
+st.info("""Please consult a tax expert for the most accurate advice.""")
